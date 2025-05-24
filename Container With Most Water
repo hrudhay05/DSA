@@ -1,0 +1,92 @@
+ou are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+
+ 
+
+Example 1:
+
+
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+Example 2:
+
+Input: height = [1,1]
+Output: 1
+ 
+
+Constraints:
+
+n == height.length
+2 <= n <= 105
+0 <= height[i] <= 104
+
+
+Solution 1: Brute Force
+public int maxArea(int[] height) {
+    int maxArea = 0;
+
+    for (int i = 0; i < height.length; i++) {
+        for (int j = i + 1; j < height.length; j++) {
+            int h = Math.min(height[i], height[j]);
+            int w = j - i;
+            maxArea = Math.max(maxArea, h * w);
+        }
+    }
+
+    return maxArea;
+}
+
+Solution 2:Preprocessing Left and Right Max Heights
+public int maxArea(int[] height) {
+    int n = height.length;
+    int maxArea = 0;
+    int[] leftMax = new int[n];
+    int[] rightMax = new int[n];
+
+    leftMax[0] = height[0];
+    for (int i = 1; i < n; i++)
+        leftMax[i] = Math.max(leftMax[i - 1], height[i]);
+
+    rightMax[n - 1] = height[n - 1];
+    for (int i = n - 2; i >= 0; i--)
+        rightMax[i] = Math.max(rightMax[i + 1], height[i]);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            int h = Math.min(height[i], height[j]);
+            int w = j - i;
+            maxArea = Math.max(maxArea, h * w);
+        }
+    }
+
+    return maxArea;
+}
+Solution 3:Two Pointers Approach
+class Solution {
+    public int maxArea(int[] a) {
+        int l = 0;
+        int h = a.length-1;
+        int ans=0;
+        int max=0;
+        while(l<h){
+
+            ans = Math.min(a[l],a[h])*(h-l);
+             max = Math.max(ans,max);
+             if(a[l]<a[h]){
+                l++;
+             }
+             else{
+                h--;
+             }
+        }
+        return max;
+
+        
+    }
+}
