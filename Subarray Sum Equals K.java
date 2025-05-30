@@ -74,4 +74,56 @@ class Solution {
         
     }
 }
+
+
+
+/*
+
+Given an integer array, find the maximum length contiguous subarray having a given sum.
+
+Input : nums[] = [5, 6, -5, 5, 3, 5, 3, -2, 0], target = 8
+Output: [-5, 5, 3, 5]
+Explanation: The subarrays with sum 8 are [[-5, 5, 3, 5], [3, 5], [5, 3]]. The longest subarray is [-5, 5, 3, 5] having length 4.
+
+Note: Since an input can contain several maximum length subarrays with given sum, the solution should return any one of the maximum length subarray.
+
+*/
+
+class Solution
+{
+	public static List<Integer> findMaxLenSubarray(List<Integer> nums, int tar)
+	{
+		// Write your code here...
+		Map<Integer,Integer> map  = new HashMap<>();
+		int n = nums.size();
+	
+		int start=-1;
+		int end=-1;
+		int sum=0;
+		int max=0;
+		map.put(0,-1);
+		for(int i=0;i<n;i++){
+			sum+=nums.get(i);
+			if(map.containsKey(sum-tar)){
+				int prev = map.get(sum-tar);
+				if(i-prev>max){
+					max = i-prev;
+					start=prev+1;
+					end =i;
+				}
+			}
+			map.putIfAbsent(sum,i);
+			
+		}
+		List<Integer> res = new ArrayList<>();
+		if(start!=-1){
+		for(int i=start;i<=end;i++){
+			res.add(nums.get(i));
+		}
+		}
+		return res;
+		
+	}
+}
+
   
